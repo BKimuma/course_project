@@ -114,7 +114,7 @@ class Choice(models.Model):
     is_correct = models.BooleanField(null=True)
     
     def __str__(self):
-        return f"{self.id} Choices: {self.choice_text}"
+        return f"{self.choice_text}"
  
 # Submission model
 class Submission(models.Model):
