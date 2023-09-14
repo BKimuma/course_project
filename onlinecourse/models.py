@@ -48,13 +48,12 @@ class Learner(models.Model):
     social_link = models.URLField(max_length=200)
 
     def __str__(self):
-        return f"{self.user.username}, {self.occupation}"
-        
+        return f"{self.user.username}, {self.occupation}"       
 
 
 # Course model
 class Course(models.Model):
-    name = models.CharField(null=False, max_length=100, default='online course')
+    name = models.CharField(null=False, max_length=100, default='Course Title')
     image = models.ImageField(upload_to='course_images/')
     description = models.TextField()
     pub_date = models.DateField(null=True)
@@ -64,15 +63,18 @@ class Course(models.Model):
     is_enrolled = False
 
     def __str__(self):
-        return f"Name: {self.name}, Description: {self.description}"
+        return f"Name: {self.name}"    
         
 
 # Lesson model
 class Lesson(models.Model):
-    title = models.CharField(max_length=200, default="title")
+    title = models.CharField(max_length=200, default="Enter lesson title")
     order = models.IntegerField(default=0)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     content = models.TextField()
+
+    def __str__(self):
+        return f"Title: {self.id}"
 
 # Enrollment model
 class Enrollment(models.Model):
@@ -95,15 +97,20 @@ class Enrollment(models.Model):
 
 # Question model
 class Question(models.Model):
-    question_text = models.TextField()
+    question_text = models.TextField()    
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, default=1)
+
+    def is_enrolled(self, learner):
+        return Enrollment.objects.filter(user=learner, course_lesson=self).exists()
 
     def __str__(self):
         return self.question_text
-
+    
+'''
 # Choice model
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    choices = models.CharField(max_length=200)
+    choices = models.BooleanField(null=False)
     
     def __str__(self):
         return self.choices
@@ -115,4 +122,4 @@ class Submission(models.Model):
 
     def __str__(self):
         return f"Submission {self.id}"
-    
+''' 
