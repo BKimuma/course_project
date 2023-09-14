@@ -21,9 +21,15 @@ class CourseAdmin(admin.ModelAdmin):
 class LessonAdmin(admin.ModelAdmin):
     list_display = ['title', 'course']
     search_fields = ['title', 'course']
+    
+    def lesson_number(self, obj):
+        return obj.id
+    
+    lesson_number.short_description = 'Lesson Number'
 
 class LearnerAdmin(admin.ModelAdmin):
     list_display = ['user']
+
 
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Lesson, LessonAdmin)
