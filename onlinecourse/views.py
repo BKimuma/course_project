@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.views import generic
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
 import logging
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -88,7 +89,7 @@ class CourseDetailView(generic.DetailView):
     model = Course
     template_name = 'onlinecourse/course_detail_bootstrap.html'
 
-
+@login_required(login_url="onlinecourse:login")
 def enroll(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
     user = request.user
