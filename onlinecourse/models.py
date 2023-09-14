@@ -74,7 +74,7 @@ class Lesson(models.Model):
     content = models.TextField()
 
     def __str__(self):
-        return f"Title: {self.id}"
+        return f"Title: {self.title}"
 
 # Enrollment model
 class Enrollment(models.Model):
@@ -98,7 +98,7 @@ class Enrollment(models.Model):
 # Question model
 class Question(models.Model):
     question_text = models.TextField()    
-    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, default=1)
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
 
     def is_enrolled(self, learner):
         return Enrollment.objects.filter(user=learner, course_lesson=self).exists()
@@ -106,7 +106,6 @@ class Question(models.Model):
     def __str__(self):
         return self.question_text
     
-'''
 # Choice model
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
@@ -119,7 +118,3 @@ class Choice(models.Model):
 class Submission(models.Model):
     enrollment = models.ForeignKey(Enrollment, on_delete=models.CASCADE)
     choices = models.ManyToManyField(Choice)
-
-    def __str__(self):
-        return f"Submission {self.id}"
-''' 

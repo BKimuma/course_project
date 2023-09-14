@@ -1,6 +1,6 @@
 from django.contrib import admin
 # <HINT> Import any new Models here
-from .models import Course, Lesson, Instructor, Learner, Question
+from .models import Course, Lesson, Instructor, Learner, Question, Choice, Submission
 
 # <HINT> Register QuestionInline and ChoiceInline classes here
 
@@ -30,8 +30,5 @@ admin.site.register(Lesson, LessonAdmin)
 admin.site.register(Instructor)
 admin.site.register(Learner, LearnerAdmin)
 admin.site.register(Question)
-
-'''
 admin.site.register(Choice)
 admin.site.register(Submission)
-'''
