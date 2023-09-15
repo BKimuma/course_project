@@ -100,7 +100,6 @@ class Question(models.Model):
     question_text = models.TextField()    
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
     grade = models.IntegerField(default=0)
-
     def is_enrolled(self, learner):
         return Enrollment.objects.filter(user=learner, course_lesson=self).exists()
 
@@ -123,3 +122,16 @@ class Submission(models.Model):
     def __str__(self):
         return f"{self.enrollment}"
     
+class Course_Instructor(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    instructor = models.ForeignKey(Instructor, on_delete=models.CASCADE) 
+    
+    def __str__(self):
+        return f"Course: {self.course} and Instructor {self.instructor}"
+    
+class Submission_Choice(models.Model):
+    submission = models.ForeignKey(Submission, on_delete=models.CASCADE)
+    choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Submission: {self.submission} and Choice {self.choice}"
