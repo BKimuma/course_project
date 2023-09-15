@@ -63,7 +63,7 @@ class Course(models.Model):
     is_enrolled = False
 
     def __str__(self):
-        return f"Name: {self.name}"    
+        return f"Name: {self.name} \n  Description: {self.description}"    
         
 
 # Lesson model
@@ -122,3 +122,4 @@ class Submission(models.Model):
         
     def __str__(self):
         return f"{self.enrollment}"
+    
