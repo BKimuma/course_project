@@ -28,7 +28,7 @@
                     <form class="form-inline" action="{% url 'onlinecourse:login' %}" method="post">
                         {% csrf_token %}
                         <div class="input-group">
-                            <input autofocuss autocomplete="off type="text" class="form-control" placeholder="Username" name="username" >
+                            <input autofocuss autocomplete="off" type="text" class="form-control" placeholder="Username" name="username" >
                             <input autofocuss autocomplete="off" type="password" class="form-control" placeholder="Username" name="psw" >
                             <button class="btn btn-primary" type="submit">Login</button>
                             <a class="btn btn-link" href="{% url 'onlinecourse:registration' %}">Sign Up</a>
@@ -48,22 +48,40 @@
                     <div class="card mt-1">
                         <div class="card-header"><h5>Lesson {{lesson.order|add:1}}: {{lesson.title}}</h5></div>
                         <div class="card-body">{{lesson.content|linebreaks}}</div>
-                    </div>   
-                    
+                    </div>            
+                {% endfor %}          
+            </div>
+            {% if user.is_authenticated %}
+            </br>                
+            <button class="btn btn-primary btn-block" data-toggle="collapse" data-target="#exam">Start Exams</button>
+            <div id="exam" clas="collapse">
+                <form id="questionform" action="{% 'onlinecourse:submit' course.id %}" method="POST">
+                    {% for question in course.question_set.all %}
                     <div class="card mt-1">
-                        <div class="card-header"><h5>Questions:</h5></div>
-                        <div class="card-body">
-                            {% for question in questions %}
-                                {% if question.lesson == lesson %}
-                                    {{ question.question_text }} <br>
-                                {% endif %}
+                        <div class="card-header">
+                            <h5>{{ question.question_text }}</h5>
+                        </div>
+                        {% csrf_token %}
+                        <div class="form-group">
+                            {% for choice in question.choice_set.all %}
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" name="choice_{{choice.id}}" class="form-check-input"
+                                        id="{{choice.id}}" value="{{choice.id}}">{{ choice.question_text }}
+                                </label>
+                            </div>
                             {% endfor %}
                         </div>
                     </div>
-                    <hr>
-                {% endfor %}           
-            </div>          
-            <!-- Course detail template changes go here -->
+                    {% endfor %}                                               
+                    <input class="btn btn-success btn-block" type="submit" value="Submit">
+                </form>                    
+            </div>
+            {% endif %}
+        </div>
+
     </div>
+            <!-- Course detail template changes go here -->
+
 </body>
 </html>
