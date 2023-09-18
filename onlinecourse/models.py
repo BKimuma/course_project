@@ -99,18 +99,29 @@ class Enrollment(models.Model):
 class Question(models.Model):
     question_text = models.TextField()    
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
-    grade = models.IntegerField(default=0)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    grade = models.IntegerField(default=50)
+
     def is_enrolled(self, learner):
         return Enrollment.objects.filter(user=learner, course_lesson=self).exists()
-
+    
     def __str__(self):
-        return self.question_text
+        return f"{self.id} {self.question_text}"
+    
+    def is_get_score(self, selected_ids):
+        all_answers = self.choice_set.filter(is_correct=True)
+        selected_correct = self.choice.filter(is_correct=True, id_in=selected_ids).count()
+        if all_answers == selected_correct:
+            return True
+        else:
+            return False    
+    
     
 # Choice model
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     choice_text = models.TextField(default="Write choices here")
-    is_correct = models.BooleanField(null=True)
+    is_correct = models.BooleanField(default=False, null=True)
     
     def __str__(self):
         return f"{self.choice_text}"
@@ -118,6 +129,7 @@ class Choice(models.Model):
 # Submission model
 class Submission(models.Model):
     enrollment = models.ForeignKey(Enrollment, on_delete=models.CASCADE)
+    choices = models.ManyToManyField(Choice)
         
     def __str__(self):
         return f"{self.enrollment}"
