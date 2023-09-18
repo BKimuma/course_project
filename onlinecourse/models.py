@@ -63,7 +63,7 @@ class Course(models.Model):
     is_enrolled = False
 
     def __str__(self):
-        return f"Name: {self.name} \n  Description: {self.description}"    
+        return f"Course Name: {self.name}"    
         
 
 # Lesson model
